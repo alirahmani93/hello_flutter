@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
+// import 'package:flutter_config/flutter_config.dart';
 
 void main() {
+  // await FlutterConfig.loadEnvVariables();
+
   runApp(MyApp());
 }
 
@@ -11,9 +14,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: true, // false
       title: 'Card List App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        brightness: Brightness.dark,
       ),
       home: CardListScreen(),
     );
@@ -167,21 +172,19 @@ class CardItem {
 var logger = Logger('app');
 
 Future<void> addCardItemToServer(CardItem cardItem) async {
-  final String apiUrl =
-      'https://your-api-url.com/card_items'; // Replace with your API endpoint
+  final String apiUrl = 'http://localhost:8000/api/news/notes/';
 
   try {
     final response = await http.post(
       Uri.parse(apiUrl),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        // Add any additional headers required by your API
       },
       body: jsonEncode(<String, dynamic>{
         'title': cardItem.title,
         'description': cardItem.description,
         'amount': cardItem.amount,
-        'dateTime': cardItem.dateTime.toString(), // Convert DateTime to String
+        'dateTime': cardItem.dateTime.toString(),
       }),
     );
 
